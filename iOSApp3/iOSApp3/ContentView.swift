@@ -8,14 +8,20 @@
 import SwiftUI
 
 struct ContentView: View {
+    @State private var favorites: [Artwork] = []
+
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        TabView {
+            HomeView(favorites: $favorites)
+                .tabItem {
+                    Label("Search", systemImage: "magnifyingglass")
+                }
+
+            FavoritesView(favorites: $favorites)
+                .tabItem {
+                    Label("Favorites", systemImage: "heart")
+                }
         }
-        .padding()
     }
 }
 
