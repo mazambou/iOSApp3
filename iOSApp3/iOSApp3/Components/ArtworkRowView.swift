@@ -12,6 +12,7 @@ struct ArtworkRowView: View {
 
     var body: some View {
         HStack(spacing: 12) {
+            // Reusable row used by both search results and favorites.
             ArtworkImageView(
                 artwork: artwork,
                 imageURL: artwork.imageURL,

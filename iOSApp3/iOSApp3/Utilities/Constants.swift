@@ -8,8 +8,7 @@
 import Foundation
 
 enum Constants {
-    static let museumName = "Art Institute of Chicago"
-    static let apiBaseURL = "https://api.artic.edu/api/v1"
-    static let imageBaseURL = "https://www.artic.edu/iiif/2"
+    static let museumName = "Cleveland Museum of Art"
+    static let apiBaseURL = "https://openaccess-api.clevelandart.org/api"
     static let defaultSearchTerm = "monet"
 }

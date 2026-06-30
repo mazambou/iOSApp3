@@ -12,29 +12,20 @@ struct Artwork: Identifiable, Codable, Equatable {
     let title: String
     let artist: String
     let dateDisplay: String
-    let imageID: String?
+    let imageURLString: String?
+    let largeImageURLString: String?
     let thumbnailAltText: String?
-    let thumbnailDataURL: String?
     let description: String
     let medium: String
     let placeOfOrigin: String
 
     var imageURL: URL? {
-        guard let imageID else { return nil }
-        return URL(string: "\(Constants.imageBaseURL)/\(imageID)/full/300,/0/default.jpg")
+        guard let imageURLString else { return nil }
+        return URL(string: imageURLString)
     }
 
     var largeImageURL: URL? {
-        guard let imageID else { return nil }
-        return URL(string: "\(Constants.imageBaseURL)/\(imageID)/full/843,/0/default.jpg")
-    }
-
-    var thumbnailImageData: Data? {
-        guard let thumbnailDataURL,
-              let base64Text = thumbnailDataURL.components(separatedBy: "base64,").last else {
-            return nil
-        }
-
-        return Data(base64Encoded: base64Text)
+        guard let largeImageURLString else { return imageURL }
+        return URL(string: largeImageURLString)
     }
 }

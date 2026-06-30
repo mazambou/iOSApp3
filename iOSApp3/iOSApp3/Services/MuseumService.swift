@@ -26,17 +26,19 @@ final class MuseumService {
         let cleanedQuery = query.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !cleanedQuery.isEmpty else { return [] }
 
-        var components = URLComponents(string: "\(Constants.apiBaseURL)/artworks/search")
+        var components = URLComponents(string: "\(Constants.apiBaseURL)/artworks/")
         components?.queryItems = [
             URLQueryItem(name: "q", value: cleanedQuery),
-            URLQueryItem(name: "size", value: "25"),
-            URLQueryItem(name: "fields", value: "id,title,artist_title,date_display,image_id,thumbnail,description,medium_display,place_of_origin")
+            URLQueryItem(name: "limit", value: "25"),
+            // Only show records that include direct image URLs so the app displays real artwork images.
+            URLQueryItem(name: "has_image", value: "1")
         ]
 
         guard let url = components?.url else {
             throw MuseumServiceError.invalidURL
         }
 
+        // URLSession downloads the JSON response from the Cleveland Museum API.
         let (data, response) = try await URLSession.shared.data(from: url)
         guard let httpResponse = response as? HTTPURLResponse,
               200..<300 ~= httpResponse.statusCode else {

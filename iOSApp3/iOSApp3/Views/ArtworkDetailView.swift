@@ -44,7 +44,8 @@ struct ArtworkDetailView: View {
                 detailSection(title: "Origin", value: artwork.placeOfOrigin)
                 detailSection(title: "Description", value: artwork.description)
             }
-            .padding()
+            .padding(.horizontal, 22)
+            .padding(.vertical, 18)
         }
         .navigationTitle("Artwork Detail")
         .navigationBarTitleDisplayMode(.inline)

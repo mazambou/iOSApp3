@@ -10,50 +10,54 @@ import Foundation
 struct ArtworkResponse: Codable {
     let id: Int
     let title: String
-    let artistTitle: String?
-    let dateDisplay: String?
-    let imageID: String?
-    let thumbnail: Thumbnail?
+    let creationDate: String?
+    let creators: [CreatorResponse]?
+    let images: ImageResponse?
     let description: String?
-    let mediumDisplay: String?
-    let placeOfOrigin: String?
+    let tombstone: String?
+    let technique: String?
+    let culture: [String]?
 
     enum CodingKeys: String, CodingKey {
         case id
         case title
-        case artistTitle = "artist_title"
-        case dateDisplay = "date_display"
-        case imageID = "image_id"
-        case thumbnail
+        case creationDate = "creation_date"
+        case creators
+        case images
         case description
-        case mediumDisplay = "medium_display"
-        case placeOfOrigin = "place_of_origin"
+        case tombstone
+        case technique
+        case culture
     }
 
     var artwork: Artwork {
+        // Convert the API response into the simpler model used by the views.
         Artwork(
             id: id,
             title: title,
-            artist: artistTitle ?? "Unknown artist",
-            dateDisplay: dateDisplay ?? "Date unknown",
-            imageID: imageID,
-            thumbnailAltText: thumbnail?.altText,
-            thumbnailDataURL: thumbnail?.lqip,
-            description: description?.removingHTMLTags ?? "No description available.",
-            medium: mediumDisplay ?? "Medium unknown",
-            placeOfOrigin: placeOfOrigin ?? "Origin unknown"
+            artist: creators?.first?.description ?? "Unknown artist",
+            dateDisplay: creationDate ?? "Date unknown",
+            imageURLString: images?.web?.url,
+            largeImageURLString: images?.print?.url ?? images?.web?.url,
+            thumbnailAltText: title,
+            description: description?.removingHTMLTags ?? tombstone?.removingHTMLTags ?? "No description available.",
+            medium: technique ?? "Medium unknown",
+            placeOfOrigin: culture?.joined(separator: ", ") ?? "Origin unknown"
         )
     }
 }
 
-struct Thumbnail: Codable {
-    let lqip: String?
-    let altText: String?
+struct CreatorResponse: Codable {
+    let description: String?
+}
 
-    enum CodingKeys: String, CodingKey {
-        case lqip
-        case altText = "alt_text"
-    }
+struct ImageResponse: Codable {
+    let web: ImageInfoResponse?
+    let print: ImageInfoResponse?
+}
+
+struct ImageInfoResponse: Codable {
+    let url: String?
 }
 
 private extension String {

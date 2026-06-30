@@ -33,19 +33,11 @@ struct ArtworkImageView: View {
         .accessibilityLabel(artwork.thumbnailAltText ?? artwork.title)
     }
 
-    @ViewBuilder
     private var placeholderImage: some View {
-        if let imageData = artwork.thumbnailImageData,
-           let uiImage = UIImage(data: imageData) {
-            Image(uiImage: uiImage)
-                .resizable()
-                .interpolation(.high)
-                .aspectRatio(contentMode: contentMode)
-        } else {
-            Image(systemName: "photo")
-                .font(.title2)
-                .foregroundStyle(.secondary)
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-        }
+        // Displayed while the image loads or if the remote image fails.
+        Image(systemName: "photo")
+            .font(.title2)
+            .foregroundStyle(.secondary)
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }

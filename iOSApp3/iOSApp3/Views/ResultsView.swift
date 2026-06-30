@@ -12,18 +12,33 @@ struct ResultsView: View {
     @Binding var favorites: [Artwork]
 
     var body: some View {
-        List(artworks) { artwork in
-            NavigationLink {
-                ArtworkDetailView(
-                    artwork: artwork,
-                    isFavorite: isFavorite(artwork),
-                    onToggleFavorite: { toggleFavorite(artwork) }
-                )
-            } label: {
-                ArtworkRowView(artwork: artwork)
+        List {
+            Section("Results") {
+                ForEach(artworks) { artwork in
+                    NavigationLink {
+                        ArtworkDetailView(
+                            artwork: artwork,
+                            isFavorite: isFavorite(artwork),
+                            onToggleFavorite: { toggleFavorite(artwork) }
+                        )
+                    } label: {
+                        ArtworkRowView(artwork: artwork)
+                    }
+                    .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+                        Button {
+                            toggleFavorite(artwork)
+                        } label: {
+                            Label(
+                                isFavorite(artwork) ? "Remove Favorite" : "Favorite",
+                                systemImage: isFavorite(artwork) ? "heart.slash" : "heart"
+                            )
+                        }
+                        .tint(isFavorite(artwork) ? .gray : .pink)
+                    }
+                }
             }
         }
-        .listStyle(.plain)
+        .listStyle(.insetGrouped)
     }
 
     private func isFavorite(_ artwork: Artwork) -> Bool {
